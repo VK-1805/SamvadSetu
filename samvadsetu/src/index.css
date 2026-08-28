@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+/* ═══════════════════════════════════════════════
+   SAMVADSETU DESIGN SYSTEM — Global Styles
+   ═══════════════════════════════════════════════ */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: #1A1A1A;
+    background-color: #F8F7F4;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Focus ring for accessibility */
+  :focus-visible {
+    outline: 2px solid #2D5A8E;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Remove default button/input styles */
+  button {
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #F1F0EC;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #C8C5BD;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9CA3AF;
+  }
+
+  /* Selection color */
+  ::selection {
+    background-color: #D1DFED;
+    color: #1E3A5F;
+  }
+
+  /* Image defaults */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Link defaults */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+@layer components {
+  /* ── STATUS BADGE VARIANTS ── */
+  .status-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-caption font-medium;
+  }
+
+  .status-open {
+    @apply bg-blue-50 text-status-open border border-blue-200;
+  }
+
+  .status-discussion {
+    @apply bg-purple-50 text-status-discussion border border-purple-200;
+  }
+
+  .status-proposed {
+    @apply bg-amber-50 text-status-proposed border border-amber-200;
+  }
+
+  .status-evidence {
+    @apply bg-cyan-50 text-status-evidence border border-cyan-200;
+  }
+
+  .status-verification {
+    @apply bg-orange-50 text-status-verification border border-orange-200;
+  }
+
+  .status-solved {
+    @apply bg-emerald-50 text-status-solved border border-emerald-200;
+  }
+
+  .status-attention {
+    @apply bg-red-50 text-status-attention border border-red-200;
+  }
+
+  /* ── CARD COMPONENT ── */
+  .card {
+    @apply bg-surface rounded-2xl border border-border shadow-card;
+  }
+
+  .card-interactive {
+    @apply bg-surface rounded-2xl border border-border shadow-card transition-all duration-250 hover:shadow-card-hover hover:border-border-strong;
+  }
+
+  /* ── PAGE CONTAINER ── */
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .page-container-narrow {
+    @apply max-w-3xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    @apply py-12 sm:py-16 lg:py-20;
+  }
+
+  /* ── SKELETON LOADING ── */
+  .skeleton {
+    @apply bg-gradient-to-r from-surface-alt via-border to-surface-alt bg-[length:200%_100%] animate-shimmer rounded;
+  }
+
+  /* ── PROSE ── */
+  .prose-content {
+    @apply text-body text-text leading-relaxed;
+  }
+
+  .prose-content p {
+    @apply mb-4;
+  }
+
+  .prose-content ul, .prose-content ol {
+    @apply mb-4 pl-6;
+  }
+
+  .prose-content li {
+    @apply mb-1;
+  }
+
+  .prose-content strong {
+    @apply font-semibold;
+  }
+}
+
+@layer utilities {
+  /* ── TEXT GRADIENT ── */
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent;
+  }
+
+  .text-gradient-accent {
+    @apply bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent;
+  }
+
+  /* ── LINE CLAMP ── */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── HIDE SCROLLBAR ── */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
