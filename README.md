@@ -1,2 +1,208 @@
 # SamvadSetu
-SAMVADSETU A Collaborative Problem-Solving Platform for Jharkhand's Societal Challenges Smart India Hackathon 2026 | Problem Statement ID: SIH26043  TEAM DETAILS Fakkiru Shashindra Reddy - Team Member - 2420030360@klh.edu.in D. Sri Charan Teja - Team Member - 2420080051@klh.edu.in Koushik - Team Leader - 2420080026@klh.edu.in Susheel - Team Member - 2420090124@klh.edu.in Babitha - Team Member - 2420080069@klh.edu.in  Project Title: SamvadSetu - Collaborative Problem-Solving Platform Theme: Disaster Management Category: Software Organization: Government of Jharkhand PS Number: SIH26043 Deadline for Idea Submission: 20 September 2026  1. PROBLEM STATEMENT (AS GIVEN) "A digital platform to crowdsource societal challenges and facilitate collaborative problem solving through universities and industry partnerships."  Jharkhand faces many real, on-ground societal problems - in rural healthcare, education, mining safety, infrastructure, environment, etc. Right now there's no structured channel connecting the people who experience these problems (citizens, local bodies, NGOs) with the people who could solve them (university students, researchers, industry professionals). Good ideas and willing talent exist, but there's no shared platform where a real problem gets visibility, gets discussed, and gets turned into an actual solution that's tracked to completion - with proof it actually worked.  2. THE PROBLEM, BROKEN DOWN - Visibility gap: Citizens/local bodies know the real problems but have no platform to broadcast them to people who can help. - Talent gap: Students and industry professionals want real-world projects but don't know what problems actually need solving. - Tracking gap: Even when someone proposes a fix informally, there's no system to track whether it was ever implemented or resolved. - Trust gap: Even when a problem is marked "solved," there's no independent proof - no evidence, no verification. - Fragmentation gap: Problem-solving happens in silos instead of as an open collaborative effort.  3. OUR PROPOSED SOLUTION: SAMVADSETU Samvad (Hindi: dialogue) + Setu (bridge) - "a bridge for dialogue."  SamvadSetu is a web-based crowdsourcing and collaborative governance platform - structurally similar to a hybrid of Stack Overflow + Reddit + a public grievance tracker, purpose-built for civic problem-solving in Jharkhand, with a transparent, evidence-backed resolution trail.  Core idea in one line: Citizens post real problems -> the community discusses and upvotes -> a solution gets proposed and accepted -> the solver submits proof of implementation -> the community/admin verifies it -> the problem is marked Verified Solved, permanently and publicly.  Who uses it: - Citizen / Local Body / NGO: Posts real problems; comments, votes; verifies whether a fix genuinely worked - University / Student: Browses problems, proposes solutions, submits evidence, builds a public contribution portfolio - Industry / Professional: Brings expertise, proposes scalable solutions, offers resources/mentorship - Admin (Govt./Platform team): Moderates content, reviews evidence, manages escalations, views analytics  4. CORE FEATURES - Problem Posting - title, description, category, district/block, image. - Community Discussion - threaded comments with replies. - Voting System - upvote/downvote on problems and comments, one vote per user. - Solution Proposal & Acceptance - comments flagged as solutions; poster/admin marks one Accepted. - Evidence & Verification - solver submits proof (photo/document); others verify it before it counts as solved. - Status Workflow - Open -> In Discussion -> Solution Proposed -> Evidence Submitted -> Verification -> Verified Solved (or Needs Attention if stalled). - Interactive Map - problems plotted on a Jharkhand map with district-level clustering. - Resource Matching - users tag what they can offer (funding, skills, materials); matched to problems needing them. - Search & Filter - by category, status, district, tag. - Impact Score & Leaderboard - points for posting, solving, verifying - gamifies participation. - Admin Dashboard - moderation, evidence review, featured problems, analytics. - Transparency Log - every action recorded in a public, append-only activity log. - User Profiles - public record of posts, solutions, and impact score. - Bilingual UI - English/Hindi toggle.  5. HOW IT SOLVES THE PROBLEM - Visibility gap -> Every problem is public, searchable, mapped, and upvotable - Talent gap -> Students/industry get a live feed of real problems instead of searching for projects - Tracking gap -> Status workflow makes progress transparent and accountable - Trust gap -> Evidence + independent verification means "solved" is proven, not just claimed - Fragmentation gap -> One shared platform avoids duplicated effort  6. WHAT MAKES IT INNOVATIVE 1. Familiar UX, new purpose - Q&A + social voting + grievance tracking, applied to civic problem-solving. 2. Role-based participation - citizens, students, and industry each get a clear way to contribute. 3. Evidence-backed accountability - problems are tracked to proven resolution, not just marked solved. 4. Resource matching - connects problems directly with the funding/skills/materials needed to fix them. 5. Growing public knowledge base - a searchable, verified archive of Jharkhand's problems and solutions over time.  7. TECHNICAL APPROACH  7.1 Tech Stack - Frontend: React (Vite) + Tailwind CSS - Fast to build, responsive by default - Data Persistence: Browser LocalStorage (JSON-based) - Lightweight, zero-config, no external DB dependency; all app data lives client-side - Data Access Layer: Custom localStorageDB.js service wrapping localStorage in REST-like CRUD methods (get/insert/update/delete) - keeps components decoupled from storage details - Map: Leaflet - Open-source, no API key needed - i18n: i18next - English/Hindi toggle - Hosting: Vercel / Netlify (static frontend only, no backend server needed) - Auth: Client-side simulated auth - user records + session stored in localStorage  Note on architecture choice: The app was initially built against Supabase, but a mid-project migration caused data loss. To keep the build stable and fully in the team's control for the hackathon timeline, all persistence was moved to browser localStorage. This keeps everything client-side and demo-safe, at the cost of data not syncing across devices/browsers - a documented trade-off (see Risks, Section 9).  7.2 Data Model (LocalStorage Collections) profiles - id, name, role (citizen/student/industry/admin), institution, district, impact_score, resources_offered problems - id, title, description, category, status, district, block, location (lat/lng), image, sdg_tags, resources_needed, author_id, accepted_solution_id, upvote_count, downvote_count, comment_count, is_featured comments - id, problem_id, author_id, parent_id (threading), content, is_solution, is_accepted, resources_offered, skills_offered votes - id, user_id, problem_id OR comment_id, vote_type (+1/-1) evidence - id, problem_id, solution_id, submitted_by, file, file_type, description verifications - id, problem_id, evidence_id, verified_by, status activity_log - id, problem_id, actor_id, action, metadata, created_at reports - id, reporter_id, problem_id/comment_id, reason, status  7.3 System Flow User signs up (role stored locally) -> Posts a problem -> Community discusses & votes -> Comment marked Solution Proposal -> Accepted -> Solver submits Evidence -> Community/admin Verifies -> Status auto-updates to Verified Solved -> Impact scores update -> visible on leaderboard, map, dashboard, activity log  8. STEP-BY-STEP BUILD PLAN Phase 0 - Foundation (Day 1): React (Vite) + Tailwind setup, design system, build the localStorageDB.js data-access layer with all collections, GitHub repo + Vercel deploy pipeline. Phase 1 - Auth (Day 1-2): Signup (role selection), login/logout, session via localStorage, protected routes, profile page. Phase 2 - Core Problem System (Days 2-4): Problem creation, feed (search/sort/filter), problem detail + threaded comments, voting, solution proposal/acceptance, status workflow, activity log. Phase 3 - Trust & Differentiators (Days 5-6): Leaflet map, evidence submission, verification flow, Verified Solved status, resource tagging/matching, impact scores. Phase 4 - Admin (Day 6): Dashboard, moderation, evidence review, featured problems, escalation. Phase 5 - Polish (Day 7): Leaderboard, landing page, Hindi toggle, seed 8-10 realistic Jharkhand sample problems, UI polish, rehearse demo.  9. FEASIBILITY & RISK MANAGEMENT Why it's feasible: No backend server, no ML/AI dependency, no hardware - pure frontend + localStorage means fewer moving parts and nothing to deploy/maintain beyond a static site.  Risks & Mitigations: - Data doesn't sync across devices/browsers (localStorage is per-browser) -> For the demo, run the full flow in one browser session; document this as a known MVP limitation, with real backend migration as a post-hackathon roadmap item - Data lost if browser storage is cleared -> Add an "Export/Import demo data" JSON backup button as a safety net before presenting - Large evidence files bloat localStorage (~5-10MB limit) -> Compress images before storing; cap file size; store only small demo-sized files - Spam / low-quality posts -> Community reporting + admin moderation - False "solved" claims -> Evidence + independent verification required before Verified Solved  10. IMPACT & BENEFITS - Social: Builds trust between citizens, government, and academia through transparent, evidence-backed resolution. - Economic: Encourages low-cost, student/industry-led local solutions instead of expensive external consultancy. - Educational: Gives students real, socially relevant projects and a public portfolio of verified contributions. - Governance: Gives local bodies a structured, mapped view of recurring issues and a public accountability record. - Scalability: Same framework extends beyond Jharkhand - and can migrate from localStorage to a full backend for production use.  "Right now, if a citizen in a Jharkhand village faces a real problem - say, lack of clean drinking water access - there's no direct way for that problem to reach a university researcher or industry engineer who could help, and even if someone fixed it informally, there's no way to prove it. SamvadSetu changes that. A citizen posts the problem here. The community discusses and upvotes it. A student or company proposes a solution, and once accepted, the solver submits real evidence, which gets independently verified. Only then is it marked Verified Solved - transparently, for anyone to see, forever."
+### A Collaborative Problem-Solving Platform for Jharkhand's Societal Challenges
+**Smart India Hackathon 2026 | Problem Statement ID: SIH26043**
+
+---
+
+## Team Details
+
+| Name | Role | Email |
+|---|---|---|
+| Pakkiru Shashindra Reddy | Team Leader | 2420030360@klh.edu.in |
+| D. Sri Charan Teja | Team Member | 2420080051@klh.edu.in |
+| Koushik Veluru | Team Member | 2420080026@klh.edu.in |
+| G.Susheel | Team Member | 2420090124@klh.edu.in |
+| G.Babitha | Team Member | 2420080069@klh.edu.in |
+
+**Project Title:** SamvadSetu — Collaborative Problem-Solving Platform
+**Theme:** Disaster Management
+**Category:** Software
+**Organization:** Government of Jharkhand
+**PS Number:** SIH26043
+**Deadline for Idea Submission:** 20 September 2026
+
+---
+
+## 1. Problem Statement (as given)
+
+> "A digital platform to crowdsource societal challenges and facilitate collaborative problem solving through universities and industry partnerships."
+
+Jharkhand faces many real, on-ground societal problems — in rural healthcare, education, mining safety, infrastructure, environment, etc. Right now there's no structured channel connecting the people who *experience* these problems (citizens, local bodies, NGOs) with the people who could *solve* them (university students, researchers, industry professionals). Good ideas and willing talent exist, but there's no shared platform where a real problem gets visibility, gets discussed, and gets turned into an actual solution that's tracked to completion — with proof it actually worked.
+
+---
+
+## 2. The Problem, Broken Down
+
+| Gap | Description |
+|---|---|
+| Visibility gap | Citizens/local bodies know the real problems but have no platform to broadcast them to people who can help. |
+| Talent gap | Students and industry professionals want real-world projects but don't know what problems actually need solving. |
+| Tracking gap | Even when someone proposes a fix informally, there's no system to track whether it was ever implemented or resolved. |
+| Trust gap | Even when a problem is marked "solved," there's no independent proof — no evidence, no verification. |
+| Fragmentation gap | Problem-solving happens in silos instead of as an open collaborative effort. |
+
+---
+
+## 3. Our Proposed Solution: SamvadSetu
+
+**Samvad** (Hindi: dialogue) + **Setu** (bridge) — *"a bridge for dialogue."*
+
+SamvadSetu is a **web-based crowdsourcing and collaborative governance platform** — structurally similar to a hybrid of **Stack Overflow + Reddit + a public grievance tracker**, purpose-built for civic problem-solving in Jharkhand, with a transparent, evidence-backed resolution trail.
+
+### Core idea in one line
+> Citizens post real problems → the community discusses and upvotes → a solution gets proposed and accepted → the solver submits proof of implementation → the community/admin verifies it → the problem is marked **Verified Solved**, permanently and publicly.
+
+### Who uses it
+
+| Role | What they do |
+|---|---|
+| Citizen / Local Body / NGO | Posts real problems; comments, votes; verifies whether a fix genuinely worked |
+| University / Student | Browses problems, proposes solutions, submits evidence, builds a public contribution portfolio |
+| Industry / Professional | Brings expertise, proposes scalable solutions, offers resources/mentorship |
+| Admin (Govt./Platform team) | Moderates content, reviews evidence, manages escalations, views analytics |
+
+---
+
+## 4. Core Features
+
+- **Problem Posting** — title, description, category, district/block, image.
+- **Community Discussion** — threaded comments with replies.
+- **Voting System** — upvote/downvote on problems and comments, one vote per user.
+- **Solution Proposal & Acceptance** — comments flagged as solutions; poster/admin marks one Accepted.
+- **Evidence & Verification** — solver submits proof (photo/document); others verify it before it counts as solved.
+- **Status Workflow** — `Open → In Discussion → Solution Proposed → Evidence Submitted → Verification → Verified Solved` (or `Needs Attention` if stalled).
+- **Interactive Map** — problems plotted on a Jharkhand map with district-level clustering.
+- **Resource Matching** — users tag what they can offer (funding, skills, materials); matched to problems needing them.
+- **Search & Filter** — by category, status, district, tag.
+- **Impact Score & Leaderboard** — points for posting, solving, verifying — gamifies participation.
+- **Admin Dashboard** — moderation, evidence review, featured problems, analytics.
+- **Transparency Log** — every action recorded in a public, append-only activity log.
+- **User Profiles** — public record of posts, solutions, and impact score.
+- **Bilingual UI** — English/Hindi toggle.
+
+---
+
+## 5. How It Solves the Problem
+
+| Gap | How SamvadSetu closes it |
+|---|---|
+| Visibility gap | Every problem is public, searchable, mapped, and upvotable |
+| Talent gap | Students/industry get a live feed of real problems instead of searching for projects |
+| Tracking gap | Status workflow makes progress transparent and accountable |
+| Trust gap | Evidence + independent verification means "solved" is proven, not just claimed |
+| Fragmentation gap | One shared platform avoids duplicated effort |
+
+---
+
+## 6. What Makes It Innovative
+
+1. **Familiar UX, new purpose** — Q&A + social voting + grievance tracking, applied to civic problem-solving.
+2. **Role-based participation** — citizens, students, and industry each get a clear way to contribute.
+3. **Evidence-backed accountability** — problems are tracked to *proven* resolution, not just marked solved.
+4. **Resource matching** — connects problems directly with the funding/skills/materials needed to fix them.
+5. **Growing public knowledge base** — a searchable, verified archive of Jharkhand's problems and solutions over time.
+
+---
+
+## 7. Technical Approach
+
+### 7.1 Tech Stack
+
+| Layer | Technology | Why |
+|---|---|---|
+| Frontend | React (Vite) + Tailwind CSS | Fast to build, responsive by default |
+| Data Persistence | Browser LocalStorage (JSON-based) | Lightweight, zero-config, no external DB dependency |
+| Data Access Layer | Custom `localStorageDB.js` service | REST-like CRUD methods, keeps components decoupled from storage details |
+| Map | Leaflet | Open-source, no API key needed |
+| i18n | i18next | English/Hindi toggle |
+| Hosting | Vercel / Netlify | Static frontend only, free-tier, simple deploys |
+| Auth | Client-side simulated auth | User records + session stored in localStorage |
+
+> **Note on architecture choice:** The app was initially built against Supabase, but a mid-project migration caused data loss. To keep the build stable and fully in the team's control for the hackathon timeline, all persistence was moved to browser localStorage. This keeps everything client-side and demo-safe, at the cost of data not syncing across devices/browsers — a documented trade-off (see Risks, Section 9).
+
+### 7.2 Data Model (LocalStorage Collections)
+
+**profiles**
+`id, name, role (citizen/student/industry/admin), institution, district, impact_score, resources_offered`
+
+**problems**
+`id, title, description, category, status, district, block, location (lat/lng), image, sdg_tags, resources_needed, author_id, accepted_solution_id, upvote_count, downvote_count, comment_count, is_featured`
+
+**comments**
+`id, problem_id, author_id, parent_id (threading), content, is_solution, is_accepted, resources_offered, skills_offered`
+
+**votes**
+`id, user_id, problem_id OR comment_id, vote_type (+1/-1)`
+
+**evidence**
+`id, problem_id, solution_id, submitted_by, file, file_type, description`
+
+**verifications**
+`id, problem_id, evidence_id, verified_by, status`
+
+**activity_log**
+`id, problem_id, actor_id, action, metadata, created_at`
+
+**reports**
+`id, reporter_id, problem_id/comment_id, reason, status`
+
+### 7.3 System Flow
+
+```
+User signs up (role stored locally)
+        ↓
+Posts a problem
+        ↓
+Community discusses & votes
+        ↓
+Comment marked Solution Proposal → Accepted
+        ↓
+Solver submits Evidence
+        ↓
+Community/admin Verifies
+        ↓
+Status auto-updates to Verified Solved
+        ↓
+Impact scores update → visible on leaderboard, map, dashboard, activity log
+```
+
+---
+
+## 8. Step-by-Step Build Plan
+
+| Phase | Days | Focus |
+|---|---|---|
+| Phase 0 — Foundation | Day 1 | React (Vite) + Tailwind setup, design system, `localStorageDB.js` data-access layer, GitHub repo + Vercel deploy pipeline |
+| Phase 1 — Auth | Day 1–2 | Signup (role selection), login/logout, session via localStorage, protected routes, profile page |
+| Phase 2 — Core Problem System | Days 2–4 | Problem creation, feed (search/sort/filter), problem detail + threaded comments, voting, solution proposal/acceptance, status workflow, activity log |
+| Phase 3 — Trust & Differentiators | Days 5–6 | Leaflet map, evidence submission, verification flow, Verified Solved status, resource tagging/matching, impact scores |
+| Phase 4 — Admin | Day 6 | Dashboard, moderation, evidence review, featured problems, escalation |
+| Phase 5 — Polish | Day 7 | Leaderboard, landing page, Hindi toggle, seed 8–10 realistic Jharkhand sample problems, UI polish, rehearse demo |
+
+---
+
+## 9. Feasibility & Risk Management
+
+**Why it's feasible:** No backend server, no ML/AI dependency, no hardware — pure frontend + localStorage means fewer moving parts and nothing to deploy/maintain beyond a static site.
+
+| Risk | Mitigation |
+|---|---|
+| Data doesn't sync across devices/browsers | Run the full flow in one browser session for the demo; document as a known MVP limitation, with backend migration as a post-hackathon roadmap item |
+| Data lost if browser storage is cleared | Add an "Export/Import demo data" JSON backup button as a safety net |
+| Large evidence files bloat localStorage (~5–10MB limit) | Compress images before storing; cap file size; use small demo-sized files |
+| Spam / low-quality posts | Community reporting + admin moderation |
+| False "solved" claims | Evidence + independent verification required before Verified Solved |
+
+---
+
+## 10. Impact & Benefits
+
+- **Social:** Builds trust between citizens, government, and academia through transparent, evidence-backed resolution.
+- **Economic:** Encourages low-cost, student/industry-led local solutions instead of expensive external consultancy.
+- **Educational:** Gives students real, socially relevant projects and a public portfolio of verified contributions.
+- **Governance:** Gives local bodies a structured, mapped view of recurring issues and a public accountability record.
+- **Scalability:** Same framework extends beyond Jharkhand — and can migrate from localStorage to a full backend for production use.
+
+---
+
+> *"Right now, if a citizen in a Jharkhand village faces a real problem — say, lack of clean drinking water access — there's no direct way for that problem to reach a university researcher or industry engineer who could help, and even if someone fixed it informally, there's no way to prove it. SamvadSetu changes that. A citizen posts the problem here. The community discusses and upvotes it. A student or company proposes a solution, and once accepted, the solver submits real evidence, which gets independently verified. Only then is it marked Verified Solved — transparently, for anyone to see, forever."*
